@@ -1,5 +1,4 @@
-import { _decorator, Component } from 'cc';
-import { director } from 'cc';
+import { _decorator, Component, director } from 'cc';
 const { ccclass, property } = _decorator;
 
 // 빠른 첫 화면을 보여주기 위한 씬.
@@ -13,8 +12,5 @@ export class Main extends Component {
 
     start() {
         director.loadScene("game");
-    }
-
-    update(deltaTime: number) {
     }
 }
