@@ -1,0 +1,24 @@
+{
+  "name": "FingerFlinger",
+  "uuid": "6ea4ebea-5bcf-4724-8f86-fac36d4e64e7",
+  "creator": {
+    "version": "3.8.8"
+  },
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "devDependencies": {
+    "typescript": "^5.9.3",
+    "ts-loader": "^9.5.4",
+    "webpack": "^5.102.1",
+    "webpack-cli": "^6.0.1"
+  }
+}
