@@ -1,0 +1,143 @@
+{
+  "ver": "2.3.14",
+  "importer": "gltf",
+  "imported": true,
+  "uuid": "5bfe2c5a-db60-46cc-819e-1e3d4099bd03",
+  "files": [],
+  "subMetas": {
+    "c2942": {
+      "importer": "gltf-mesh",
+      "uuid": "5bfe2c5a-db60-46cc-819e-1e3d4099bd03@c2942",
+      "displayName": "",
+      "id": "c2942",
+      "name": "pixel_tile.mesh",
+      "userData": {
+        "gltfIndex": 0,
+        "triangleCount": 528
+      },
+      "ver": "1.1.1",
+      "imported": true,
+      "files": [
+        ".bin",
+        ".json"
+      ],
+      "subMetas": {}
+    },
+    "cfad7": {
+      "importer": "gltf-embeded-image",
+      "uuid": "5bfe2c5a-db60-46cc-819e-1e3d4099bd03@cfad7",
+      "displayName": "",
+      "id": "cfad7",
+      "name": "Floor001.png.image",
+      "userData": {
+        "gltfIndex": 0,
+        "fixAlphaTransparencyArtifacts": true,
+        "hasAlpha": false,
+        "type": "texture"
+      },
+      "ver": "1.0.3",
+      "imported": true,
+      "files": [
+        ".json",
+        ".png"
+      ],
+      "subMetas": {}
+    },
+    "e39f7": {
+      "importer": "texture",
+      "uuid": "5bfe2c5a-db60-46cc-819e-1e3d4099bd03@e39f7",
+      "displayName": "",
+      "id": "e39f7",
+      "name": "UnnamedTexture.texture",
+      "userData": {
+        "wrapModeS": "repeat",
+        "wrapModeT": "repeat",
+        "minfilter": "linear",
+        "magfilter": "linear",
+        "mipfilter": "none",
+        "anisotropy": 0,
+        "isUuid": true,
+        "imageUuidOrDatabaseUri": "5bfe2c5a-db60-46cc-819e-1e3d4099bd03@cfad7"
+      },
+      "ver": "1.0.22",
+      "imported": true,
+      "files": [
+        ".json"
+      ],
+      "subMetas": {}
+    },
+    "42b83": {
+      "importer": "gltf-material",
+      "uuid": "5bfe2c5a-db60-46cc-819e-1e3d4099bd03@42b83",
+      "displayName": "",
+      "id": "42b83",
+      "name": "Mat_S01_GreenPlanet01.material",
+      "userData": {
+        "gltfIndex": 0
+      },
+      "ver": "1.0.14",
+      "imported": true,
+      "files": [
+        ".json"
+      ],
+      "subMetas": {}
+    },
+    "ff810": {
+      "importer": "gltf-scene",
+      "uuid": "5bfe2c5a-db60-46cc-819e-1e3d4099bd03@ff810",
+      "displayName": "",
+      "id": "ff810",
+      "name": "Map_S01_GreenPlanet_01.prefab",
+      "userData": {
+        "gltfIndex": 0
+      },
+      "ver": "1.0.14",
+      "imported": true,
+      "files": [
+        ".json"
+      ],
+      "subMetas": {}
+    }
+  },
+  "userData": {
+    "imageMetas": [
+      {
+        "name": "Floor001.png",
+        "uri": "5bfe2c5a-db60-46cc-819e-1e3d4099bd03@cfad7"
+      }
+    ],
+    "lods": {
+      "enable": false,
+      "hasBuiltinLOD": false,
+      "options": [
+        {
+          "screenRatio": 0.25,
+          "faceCount": 1
+        },
+        {
+          "screenRatio": 0.125,
+          "faceCount": 0.25
+        },
+        {
+          "screenRatio": 0.01,
+          "faceCount": 0.1
+        }
+      ]
+    },
+    "assetFinder": {
+      "meshes": [
+        "5bfe2c5a-db60-46cc-819e-1e3d4099bd03@c2942"
+      ],
+      "skeletons": [],
+      "textures": [
+        "5bfe2c5a-db60-46cc-819e-1e3d4099bd03@e39f7"
+      ],
+      "materials": [
+        "5bfe2c5a-db60-46cc-819e-1e3d4099bd03@42b83"
+      ],
+      "scenes": [
+        "5bfe2c5a-db60-46cc-819e-1e3d4099bd03@ff810"
+      ]
+    }
+  }
+}
