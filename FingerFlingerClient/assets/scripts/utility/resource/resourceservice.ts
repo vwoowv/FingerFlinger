@@ -60,10 +60,7 @@ export class ResourceService {
         return bundle;
     }
 
-    public async load<T extends Asset>(
-        bundleName: string,
-        path: string,
-        type: AssetConstructor<T>,
+    public async load<T extends Asset>(bundleName: string, path: string, type: AssetConstructor<T>,
         onProgress?: (finished: number, total: number, item?: any) => void
     ): Promise<T> {
         const cached = this.getCached(bundleName, path, type);
@@ -101,10 +98,7 @@ export class ResourceService {
         return await this.load(bundleName, path, Prefab, onProgress);
     }
 
-    public async instantiatePrefab(
-        bundleName: string,
-        path: string,
-        parent?: Node,
+    public async instantiatePrefab(bundleName: string, path: string, parent?: Node,
         onProgress?: (finished: number, total: number, item?: any) => void
     ): Promise<Node> {
         const prefab = await this.loadPrefab(bundleName, path, onProgress);
@@ -123,9 +117,7 @@ export class ResourceService {
         return await this.load(bundleName, path, TextAsset);
     }
 
-    public async preloadList(
-        bundleName: string,
-        requests: ResourcePreloadRequest[],
+    public async preloadList(bundleName: string, requests: ResourcePreloadRequest[],
         options?: { yieldBetweenGroups?: boolean; onProgress?: (finished: number, total: number) => void }
     ): Promise<void> {
         const bundle = await this.loadBundle(bundleName);

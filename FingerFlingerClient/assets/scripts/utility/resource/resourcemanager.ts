@@ -57,10 +57,7 @@ export class ResourceManager extends Component {
      * - 캐시가 있으면 즉시 반환
      * - 동일 리소스를 동시에 요청하면 in-flight Promise를 공유
      */
-    public async load<T extends Asset>(
-        bundleName: string,
-        path: string,
-        type: AssetConstructor<T>,
+    public async load<T extends Asset>(bundleName: string, path: string, type: AssetConstructor<T>,
         onProgress?: (finished: number, total: number, item?: any) => void
     ): Promise<T> {
         return await this.service.load(bundleName, path, type, onProgress);
@@ -72,10 +69,7 @@ export class ResourceManager extends Component {
     }
 
     /** 프리팹 인스턴스 생성 편의 메서드 */
-    public async instantiatePrefab(
-        bundleName: string,
-        path: string,
-        parent?: Node,
+    public async instantiatePrefab(bundleName: string, path: string, parent?: Node,
         onProgress?: (finished: number, total: number, item?: any) => void
     ): Promise<Node> {
         return await this.service.instantiatePrefab(bundleName, path, parent, onProgress);
@@ -100,9 +94,7 @@ export class ResourceManager extends Component {
      * 주의: preload는 즉시 에셋을 반환하지는 않지만(요청 파이프라인/의존성 캐시),
      *       이후 실제 load()가 훨씬 가벼워지는 용도로 사용합니다.
      */
-    public async preloadList(
-        bundleName: string,
-        requests: ResourcePreloadRequest[],
+    public async preloadList(bundleName: string, requests: ResourcePreloadRequest[],
         options?: {
             /** type별 preload 호출 사이에 yield 할지 */
             yieldBetweenGroups?: boolean;
