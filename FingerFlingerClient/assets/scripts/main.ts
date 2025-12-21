@@ -10,8 +10,7 @@ const { ccclass, property } = _decorator;
 export class Main extends Component {
     @property(EntryUI)
     private entryui: EntryUI = null;
-
-    private _loadingProgress01 = 0;
+    private loadingProgress01 = 0;
 
     constructor() {
         super();
@@ -34,16 +33,16 @@ export class Main extends Component {
     private setLoadingProgress(progress01: number): void {
         const clamped = Math.min(1, Math.max(0, progress01));
         // 병렬 프리로드 시 진행률이 뒤로 가지 않도록 단조 증가 보장
-        this._loadingProgress01 = Math.max(this._loadingProgress01, clamped);
+        this.loadingProgress01 = Math.max(this.loadingProgress01, clamped);
         const ui = this.resolveEntryUI();
-        ui?.setProgress(this._loadingProgress01);
+        ui?.setProgress(this.loadingProgress01);
     }
 
     private async preloadPrefabsAndLoadGame(): Promise<void> {
         const PHASE1_WEIGHT = 0.5;  // 프리팹(맵) 프리로드 비중
         const PHASE2_WEIGHT = 0.45; // game 씬 프리로드 비중(0.95까지)
 
-        this._loadingProgress01 = 0;
+        this.loadingProgress01 = 0;
         this.setLoadingProgress(0);
 
         // 미리 로딩 로직은 별도 클래스로 분리

@@ -1,5 +1,6 @@
 import { _decorator, Component, director, Asset, AudioClip, Prefab, TextAsset, Texture2D, Node } from 'cc';
 import { ResourceService } from './resourceservice';
+import { PoolManager } from './poolmanager';
 import type { AssetConstructor, ResourcePreloadRequest } from './resourceservice';
 const { ccclass } = _decorator;
 
@@ -16,19 +17,19 @@ export class ResourceManager extends Component {
      * - 리스트 프리로드(`preloadList`) 지원: 런타임 로딩 스파이크 완화 목적
      */
 
-    private static _instance: ResourceManager | null = null;
+    private static instanceRef: ResourceManager | null = null;
 
     private readonly service = new ResourceService();
 
     public onLoad() {
         // 씬이 바뀌어도 유지되도록 Persist 등록 + 중복 생성 방지
-        if (ResourceManager._instance && ResourceManager._instance !== this) {
+        if (ResourceManager.instanceRef && ResourceManager.instanceRef !== this) {
             // 다음 씬에 동일 매니저가 또 배치된 경우: 새로 생성된 쪽 제거
             this.node.destroy();
             return;
         }
 
-        ResourceManager._instance = this;
+        ResourceManager.instanceRef = this;
 
         // Persist Root Node 등록(씬 전환에도 유지)
         // 이미 등록된 노드면 addPersistRootNode를 여러 번 호출해도 무방하지만,
@@ -37,14 +38,14 @@ export class ResourceManager extends Component {
     }
 
     public onDestroy() {
-        if (ResourceManager._instance === this) {
-            ResourceManager._instance = null;
+        if (ResourceManager.instanceRef === this) {
+            ResourceManager.instanceRef = null;
         }
     }
 
     /** 필요시 씬에 붙어있는 컴포넌트를 싱글톤으로 쓰기 위한 접근자 */
     public static get instance(): ResourceManager | null {
-        return ResourceManager._instance;
+        return ResourceManager.instanceRef;
     }
 
     /** 번들 로드(캐시 + Promise) */
@@ -72,6 +73,15 @@ export class ResourceManager extends Component {
     public async instantiatePrefab(bundleName: string, path: string, parent?: Node,
         onProgress?: (finished: number, total: number, item?: any) => void
     ): Promise<Node> {
+        // 풀 매니저가 존재하면: "ResourceManager로 로드 + PoolManager로 재사용" 흐름으로 생성
+        const pm = PoolManager.instance;
+        if (pm) {
+            const prefab = await this.service.loadPrefab(bundleName, path, onProgress);
+            const key = `${bundleName}::${path}`; // 번들/경로 조합으로 유니크 키 구성
+            return pm.spawnFromPrefab(key, prefab, parent);
+        }
+
+        // 풀 매니저가 없으면 기존 동작 유지
         return await this.service.instantiatePrefab(bundleName, path, parent, onProgress);
     }
 
