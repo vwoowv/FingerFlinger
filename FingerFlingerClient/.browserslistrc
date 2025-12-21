@@ -1,0 +1,14 @@
+# Preview / Web build target browsers
+#
+# Targets:
+# - iOS >= 13
+# - Android >= 8 (Oreo) ~ Chrome/WebView 62+
+# - 일반적인 HTML5 웹 프리뷰
+
+defaults
+not ie <= 11
+iOS >= 13
+Android >= 8
+Chrome >= 62
+
+
