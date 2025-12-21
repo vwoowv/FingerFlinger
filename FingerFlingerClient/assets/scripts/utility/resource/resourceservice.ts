@@ -1,4 +1,5 @@
 import { Asset, AssetManager, assetManager, AudioClip, instantiate, Prefab, TextAsset, Texture2D, Node } from 'cc';
+import { TimeUtility } from '../base/timeutility';
 
 /** Asset 생성자 타입(예: Texture2D, AudioClip, TextAsset, Prefab 등) */
 export type AssetConstructor<T extends Asset> = new (...args: any[]) => T;
@@ -36,10 +37,6 @@ export class ResourceService {
         const key = this.makeKey(bundleName, path, type.name ?? 'Asset');
         asset.addRef?.();
         this.assetCache.set(key, asset);
-    }
-
-    private async yieldOnce(): Promise<void> {
-        await new Promise<void>((resolve) => setTimeout(resolve, 0));
     }
 
     public async loadBundle(bundleName: string): Promise<AssetManager.Bundle> {
@@ -169,7 +166,7 @@ export class ResourceService {
             });
 
             if (yieldBetweenGroups) {
-                await this.yieldOnce();
+                await TimeUtility.yieldOnce();
             }
         }
     }
