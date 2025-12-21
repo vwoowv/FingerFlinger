@@ -327,7 +327,9 @@
     },
     "_enabled": true,
     "__prefab": null,
-    "loadingProgressBar": null,
+    "loadingProgressBar": {
+      "__id__": 21
+    },
     "_id": "5eBBptXbdJnZDJ1N1AQ113"
   },
   {

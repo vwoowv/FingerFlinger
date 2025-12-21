@@ -1,8 +1,8 @@
 import { _decorator, Component, ProgressBar } from 'cc';
 const { ccclass, property } = _decorator;
 
-@ccclass('entryui')
-export class entryui extends Component {
+@ccclass('EntryUI')
+export class EntryUI extends Component {
     @property(ProgressBar)
     private loadingProgressBar: ProgressBar | null = null;
 

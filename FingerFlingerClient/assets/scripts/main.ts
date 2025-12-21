@@ -1,6 +1,6 @@
 import { _decorator, Component, director, find } from 'cc';
 import { ResourceManager } from './utility/resource/resourcemanager';
-import { entryui } from './entry/ui/entryui';
+import { EntryUI } from './entry/ui/entryui';
 const { ccclass, property } = _decorator;
 
 // 빠른 첫 화면을 보여주기 위한 씬.
@@ -8,8 +8,8 @@ const { ccclass, property } = _decorator;
 // 캐싱이 완료되면 game 씬으로 이동한다
 @ccclass('Main')
 export class Main extends Component {
-    @property(entryui)
-    private entryui: entryui = null;
+    @property(EntryUI)
+    private entryui: EntryUI = null;
     constructor() {
         super();
     }
@@ -19,11 +19,11 @@ export class Main extends Component {
         void this.preloadMapPrefabAndLoadGame();
     }
 
-    private resolveEntryUI(): entryui | null {
+    private resolveEntryUI(): EntryUI | null {
         if (this.entryui?.isValid) return this.entryui;
         // 씬 직렬화가 빠져있어도 동작하도록 Canvas 아래에서 자동 탐색
         const canvas = find('Canvas');
-        const ui = canvas?.getComponent(entryui) ?? canvas?.getComponentInChildren(entryui);
+        const ui = canvas?.getComponent(EntryUI) ?? canvas?.getComponentInChildren(EntryUI);
         this.entryui = (ui as any) ?? null;
         return this.entryui;
     }
