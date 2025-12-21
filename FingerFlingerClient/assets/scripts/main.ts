@@ -11,6 +11,7 @@ export class Main extends Component {
     }
 
     start() {
+        console.log("Main start. load game scene.");
         director.loadScene("game");
     }
 }
