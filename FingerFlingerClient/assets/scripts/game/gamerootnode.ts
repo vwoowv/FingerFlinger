@@ -1,5 +1,4 @@
 import { _decorator, Component, Node } from 'cc';
-import { ResourceManager } from '../utility/resource/resourcemanager';
 import { PoolManager } from '../utility/resource/poolmanager';
 import { DEFAULT_PREFAB_BUNDLE_NAME, DEFAULT_PREFAB_PATHS } from '../entry/gamepreloader';
 const { ccclass, property } = _decorator;
@@ -31,12 +30,6 @@ export class GameRootNode extends Component {
 
     private async loadAndAttachMap(): Promise<void> {
         try {
-            const rm = ResourceManager.instance;
-            if (!rm) {
-                console.error('[GameRootNode] ResourceManager.instance is null. Ensure ResourceManager persists from entry scene.');
-                return;
-            }
-
             const bundleName = (this.mapPrefabBundleName ?? '').trim() || DEFAULT_PREFAB_BUNDLE_NAME;
             const path = (this.mapPrefabPath ?? '').trim();
             if (!path) {
@@ -45,19 +38,25 @@ export class GameRootNode extends Component {
             }
 
             const pm = PoolManager.instance;
-            const poolKey = `${bundleName}::${path}`;
+            if (!pm) {
+                console.error('[GameRootNode] PoolManager.instance is null. Ensure PoolManager exists/persists.');
+                return;
+            }
 
             // 기존 맵이 있으면 먼저 회수
             if (this.mapNode?.isValid) {
-                pm ? pm.despawn(this.mapNode) : this.mapNode.destroy();
+                pm.despawn(this.mapNode);
                 this.mapNode = null;
             }
 
-            // 풀 매니저가 있으면: loadPrefab + spawnFromPrefab로 명시적으로 풀링
-            // 없으면: 기존대로 instantiatePrefab 폴백
-            const spawned = pm
-                ? pm.spawnFromPrefab(poolKey, await rm.loadPrefab(bundleName, path), this.node)
-                : await rm.instantiatePrefab(bundleName, path, this.node);
+            // PoolManager만으로 로드 + 풀 스폰 (실패 시 로그 남기고 종료)
+            let spawned: Node;
+            try {
+                spawned = await pm.spawn(bundleName, path, this.node);
+            } catch (e) {
+                console.error('[GameRootNode] failed to spawn map via PoolManager.', { bundleName, path, error: e });
+                return;
+            }
 
             const safePathLabel = path.split('/').join('_').split('\\').join('_');
             spawned.name = `Map(${safePathLabel})`;

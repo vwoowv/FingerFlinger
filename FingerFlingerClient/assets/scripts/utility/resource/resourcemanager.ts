@@ -1,6 +1,5 @@
 import { _decorator, Component, director, Asset, AudioClip, Prefab, TextAsset, Texture2D, Node } from 'cc';
 import { ResourceService } from './resourceservice';
-import { PoolManager } from './poolmanager';
 import type { AssetConstructor, ResourcePreloadRequest } from './resourceservice';
 const { ccclass } = _decorator;
 
@@ -73,15 +72,6 @@ export class ResourceManager extends Component {
     public async instantiatePrefab(bundleName: string, path: string, parent?: Node,
         onProgress?: (finished: number, total: number, item?: any) => void
     ): Promise<Node> {
-        // 풀 매니저가 존재하면: "ResourceManager로 로드 + PoolManager로 재사용" 흐름으로 생성
-        const pm = PoolManager.instance;
-        if (pm) {
-            const prefab = await this.service.loadPrefab(bundleName, path, onProgress);
-            const key = `${bundleName}::${path}`; // 번들/경로 조합으로 유니크 키 구성
-            return pm.spawnFromPrefab(key, prefab, parent);
-        }
-
-        // 풀 매니저가 없으면 기존 동작 유지
         return await this.service.instantiatePrefab(bundleName, path, parent, onProgress);
     }
 

@@ -1,5 +1,6 @@
 import { _decorator, Component, director, instantiate, Node, NodePool, Prefab } from 'cc';
 import { PooledObject } from './pooledobject';
+import { ResourceManager } from './resourcemanager';
 const { ccclass } = _decorator;
 
 @ccclass('PoolManager')
@@ -45,6 +46,28 @@ export class PoolManager extends Component {
         const pool = new NodePool();
         this.pools.set(key, pool);
         return pool;
+    }
+
+    private makePoolKey(bundleName: string, path: string): string {
+        const b = (bundleName ?? '').trim();
+        const p = (path ?? '').trim();
+        if (!b) throw new Error('[PoolManager] bundleName is empty.');
+        if (!p) throw new Error('[PoolManager] path is empty.');
+        return `${b}::${p}`;
+    }
+
+    /**
+     * ResourceManager를 내부에서 사용해 (bundleName, path)만으로 로드 + 풀 스폰
+     * - 호출부에서 ResourceManager를 따로 부르지 않아도 됨
+     */
+    public async spawn(bundleName: string, path: string, parent?: Node,
+        onProgress?: (finished: number, total: number, item?: any) => void
+    ): Promise<Node> {
+        const rm = ResourceManager.instance;
+        if (!rm) throw new Error('[PoolManager] ResourceManager.instance is null. Ensure ResourceManager exists.');
+        const key = this.makePoolKey(bundleName, path);
+        const prefab = await rm.loadPrefab(bundleName, path, onProgress);
+        return this.spawnFromPrefab(key, prefab, parent);
     }
 
     /**
