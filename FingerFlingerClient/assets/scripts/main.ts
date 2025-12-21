@@ -10,13 +10,21 @@ const { ccclass, property } = _decorator;
 export class Main extends Component {
     @property(EntryUI)
     private entryui: EntryUI = null;
+
+    /** 프리로드(캐싱)할 프리팹 경로 목록(확장자 제외). 예: "map/Map_S01_GreenPlanet_01" */
+    @property({ type: [String] })
+    private preloadPrefabPaths: string[] = ['map/Map_S01_GreenPlanet_01'];
+
+    /** 프리팹이 들어있는 번들 이름. (`assets/resource/prefab`가 bundle이면 보통 "prefab") */
+    @property
+    private preloadPrefabBundleName = 'prefab';
     constructor() {
         super();
     }
 
     start() {
-        console.log('Main start. preload Map_S01_GreenPlanet_01 prefab before loading game scene.');
-        void this.preloadMapPrefabAndLoadGame();
+        console.log('[Main] start. preload prefabs(list) before loading game scene.', this.preloadPrefabPaths);
+        void this.preloadPrefabsAndLoadGame(this.preloadPrefabPaths);
     }
 
     private resolveEntryUI(): EntryUI | null {
@@ -37,7 +45,7 @@ export class Main extends Component {
         return new Promise((resolve) => setTimeout(resolve, ms));
     }
 
-    private async preloadMapPrefabAndLoadGame(): Promise<void> {
+    private async preloadPrefabsAndLoadGame(prefabPaths?: string[]): Promise<void> {
         const MIN_LOGO_MS = 3000;
         const PHASE1_WEIGHT = 0.5;  // 프리팹(맵) 프리로드 비중
         const PHASE2_WEIGHT = 0.45; // game 씬 프리로드 비중(0.95까지)
@@ -46,21 +54,37 @@ export class Main extends Component {
 
         const preloadTask = (async () => {
             try {
-                // ResourceManager를 통한 로딩(캐시/동시요청 디듀프/Ref 관리)
-                // `assets/resource/prefab` 폴더가 Asset Bundle(`isBundle: true`)이므로 bundleName="prefab"
-                // path="map/Map_S01_GreenPlanet_01" (확장자 제외)
+                // ResourceManager를 통한 리스트 프리로드(preloadList)
+                // - preload는 "캐시/의존성 파이프라인을 미리 데워서" 이후 load를 가볍게 하는 용도입니다.
                 const rm = ResourceManager.instance;
                 if (!rm) throw new Error('ResourceManager.instance is null. Ensure ResourceManager exists in the first scene.');
-                await rm.loadPrefab('prefab', 'map/Map_S01_GreenPlanet_01', (finished, total) => {
-                    const denom = Math.max(1, total || 0);
-                    const ratio = Math.min(1, Math.max(0, (finished || 0) / denom));
-                    // 0 ~ 0.5
-                    this.setLoadingProgress(ratio * PHASE1_WEIGHT);
-                });
+
+                const bundleName = this.preloadPrefabBundleName || 'prefab';
+                const list = (prefabPaths ?? this.preloadPrefabPaths ?? []).filter((p) => !!p && p.trim().length > 0);
+
+                if (list.length === 0) {
+                    // 로드할 게 없으면 1단계는 즉시 완료 처리
+                    this.setLoadingProgress(PHASE1_WEIGHT);
+                    return;
+                }
+
+                await rm.preloadList(
+                    bundleName,
+                    list.map((path) => ({ kind: 'prefab' as const, path: path.trim() })),
+                    {
+                        onProgress: (finished, total) => {
+                            const denom = Math.max(1, total || 0);
+                            const ratio = Math.min(1, Math.max(0, (finished || 0) / denom));
+                            // 0 ~ 0.5
+                            this.setLoadingProgress(ratio * PHASE1_WEIGHT);
+                        },
+                    }
+                );
+
                 // 프리팹 프리로드 완료 시 0.5까지 올려둠
                 this.setLoadingProgress(PHASE1_WEIGHT);
             } catch (e) {
-                console.error('[Main] prefab preload via ResourceManager failed.', e);
+                console.error('[Main] prefabs preload(list) via ResourceManager failed.', e);
             }
         })();
 
