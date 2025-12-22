@@ -6,6 +6,7 @@
 
 - 프로젝트: `FingerFlingerClient` (Cocos Creator 3.8.8)
 - 목표: npm 구성 안정화 + webpack으로 **Cocos 런타임에서 쓸 번들(bundle.js)** 생성
+- 전제: 이 레포는 바이너리 에셋을 **Git LFS로 관리**하므로, 다른 PC/터미널 환경에서는 `git-lfs` 설치 후 `git lfs install`이 필요할 수 있음
 
 ## 결정사항
 

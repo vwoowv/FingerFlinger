@@ -2,6 +2,37 @@
 
 이 문서는 다른 PC에서 프로젝트를 내려받았을 때, **npm 설치/webpack 번들 생성까지** 빠르게 재현할 수 있도록 현재 구성 상태를 정리한 문서입니다.
 
+## (중요) Git LFS 필수
+
+이 레포는 `.gitattributes`에서 `*.png`, `*.glb` 등 바이너리 에셋을 **Git LFS로 관리**합니다.  
+따라서 **`git-lfs`가 설치되어 있지 않으면** 푸시/체크아웃/머지 훅에서 실패할 수 있습니다(소스트리는 LFS를 자동으로 포함하는 경우가 많음).
+
+설치 후 아래를 1회 실행하세요:
+
+```bash
+git lfs install
+```
+
+### macOS (Homebrew)
+
+```bash
+brew install git-lfs
+git lfs install
+```
+
+### Windows
+
+아래 중 하나로 설치 후:
+
+- `winget install GitHub.GitLFS`
+- 또는 `choco install git-lfs`
+
+그 다음:
+
+```powershell
+git lfs install
+```
+
 ## 프로젝트 위치/전제
 
 - 이 문서는 `FingerFlingerClient/` 폴더 기준입니다.
