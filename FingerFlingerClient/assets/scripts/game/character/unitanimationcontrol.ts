@@ -17,11 +17,6 @@ export class UnitAnimationControl extends Component {
     })
     private readonly spineRoot: Node | null = null;
 
-    @property({
-        tooltip: 'spineRoot 기준으로 Skeleton이 있는 child 경로(예: "Model/Spine"). 비우면 spineRoot(또는 그 자식)에서 자동 탐색합니다.',
-    })
-    private readonly spineChildPath = '';
-
     @property({ tooltip: 'Idle 애니메이션 이름(데이터/프리팹마다 다를 수 있어요).' })
     private animIdle = 'idle';
 
@@ -54,7 +49,7 @@ export class UnitAnimationControl extends Component {
     protected onLoad(): void {
         this.skeleton = this.resolveSkeleton();
         if (!this.skeleton) {
-            console.warn('[UnitAnimationControl] Spine Skeleton을 찾지 못했습니다. inspector의 spineRoot/spineChildPath를 확인하세요.', this.node?.name);
+            console.warn('[UnitAnimationControl] Spine Skeleton을 찾지 못했습니다. inspector의 spineRoot를 확인하세요.', this.node?.name);
             return;
         }
 
@@ -175,17 +170,7 @@ export class UnitAnimationControl extends Component {
 
     private resolveSkeleton(): sp.Skeleton | null {
         const root = this.spineRoot?.isValid ? this.spineRoot : this.node;
-        const path = this.spineChildPath?.trim() ?? '';
-
-        // 1) 경로가 있으면 해당 노드에서 Skeleton 탐색
-        if (path.length > 0) {
-            const targetNode = root.getChildByPath(path);
-            const sk = this.findSkeletonUnder(targetNode);
-            if (sk) return sk;
-            return null;
-        }
-
-        // 2) root 자신 또는 자식에서 첫 Skeleton
+        // root 자신 또는 자식에서 첫 Skeleton
         return this.findSkeletonUnder(root);
     }
 
