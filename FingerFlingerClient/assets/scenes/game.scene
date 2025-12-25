@@ -29,7 +29,7 @@
     "_active": true,
     "_components": [],
     "_prefab": {
-      "__id__": 16
+      "__id__": 17
     },
     "_lpos": {
       "__type__": "cc.Vec3",
@@ -60,7 +60,7 @@
     },
     "autoReleaseAssets": false,
     "_globals": {
-      "__id__": 17
+      "__id__": 18
     },
     "_id": "6525b92b-e0b3-49aa-a80b-2c2fa37485b5"
   },
@@ -267,7 +267,7 @@
     "_active": true,
     "_components": [
       {
-        "__id__": 15
+        "__id__": 16
       }
     ],
     "_prefab": null,
@@ -320,6 +320,9 @@
       },
       {
         "__id__": 14
+      },
+      {
+        "__id__": 15
       }
     ],
     "_prefab": null,
@@ -507,7 +510,6 @@
     "spineRoot": {
       "__id__": 9
     },
-    "spineChildPath": "",
     "animIdle": "idle",
     "animMove": "move",
     "animAttack": "attack",
@@ -517,6 +519,25 @@
     "lockAfterDie": true,
     "debugLog": false,
     "_id": "adkV+yLFNJeKEnXPCK7Shu"
+  },
+  {
+    "__type__": "d4e0c2gKHZNdpLz7z9DxiM6",
+    "_name": "",
+    "_objFlags": 0,
+    "__editorExtras__": {},
+    "node": {
+      "__id__": 8
+    },
+    "_enabled": true,
+    "__prefab": null,
+    "animationControl": {
+      "__id__": 14
+    },
+    "idleToWanderSec": 1.5,
+    "wanderSec": 2,
+    "attackSec": 0.6,
+    "hitStunSec": 0.35,
+    "_id": "ccYK770oRGaJRMDesSAL2y"
   },
   {
     "__type__": "17162ftrZ5MjoaEURuSVnjW",
@@ -543,28 +564,28 @@
   {
     "__type__": "cc.SceneGlobals",
     "ambient": {
-      "__id__": 18
-    },
-    "shadows": {
       "__id__": 19
     },
-    "_skybox": {
+    "shadows": {
       "__id__": 20
     },
-    "fog": {
+    "_skybox": {
       "__id__": 21
     },
-    "octree": {
+    "fog": {
       "__id__": 22
     },
-    "skin": {
+    "octree": {
       "__id__": 23
     },
-    "lightProbeInfo": {
+    "skin": {
       "__id__": 24
     },
-    "postSettings": {
+    "lightProbeInfo": {
       "__id__": 25
+    },
+    "postSettings": {
+      "__id__": 26
     },
     "bakedWithStationaryMainLight": false,
     "bakedWithHighpLightmap": false
