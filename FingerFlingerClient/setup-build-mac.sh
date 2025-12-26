@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-set -u
+set -euo pipefail
 
 # Run from FingerFlingerClient folder. This script installs dependencies and builds webpack bundle.
 
@@ -19,6 +19,16 @@ node -v
 echo "[INFO] npm version:"
 npm -v
 echo
+
+# Cocos Creator generates TypeScript declarations under temp/declarations.
+# Webpack build relies on them via tsconfig.webpack.json.
+if [[ ! -d "${SCRIPT_DIR}/temp/declarations" ]]; then
+  echo
+  echo "[ERROR] Cocos TypeScript 선언 파일을 찾지 못했습니다: \"${SCRIPT_DIR}/temp/declarations\""
+  echo "        Cocos Creator로 이 프로젝트를 1회 열어 temp/declarations 를 생성한 뒤,"
+  echo "        이 스크립트를 다시 실행해 주세요."
+  exit 1
+fi
 
 echo "[INFO] Installing dependencies via \"npm ci\"..."
 if ! npm ci; then
